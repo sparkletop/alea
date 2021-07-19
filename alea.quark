@@ -1,0 +1,11 @@
+(
+  name: "alea",
+  summary: "Patterns for aleatory composition",
+  version: "0.001",
+  schelp: "alea.schelp",
+  dependencies: "",
+  license: "GNU GPL v3.0",
+  copyright: "Anders Eskildsen",
+  ext_dependency: "",
+  url: "https://github.com/sparkletop/alea"
+)

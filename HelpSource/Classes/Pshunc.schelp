@@ -1,0 +1,95 @@
+TITLE:: Pshunc
+SUMMARY:: Shuffle and truncate a list
+CATEGORIES:: Libraries>alea, Streams-Patterns-Events>Patterns>List
+RELATED:: Overviews/alea, Classes/Pshuf
+
+DESCRIPTION::
+Pshunc shuffles a list and truncates the result to a specific length. Pshunc is handy for selecting random subsets of collections with specific lengths.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new Pshunc.
+
+ARGUMENT:: list
+A link::Classes/List:: or link::Classes/Array::.
+
+ARGUMENT:: length
+Desired length of the truncated list.
+
+If the desired length is larger than the length of the supplied list, the list will be extended. The underlying extension method is link::Search#wrapExtend#wrapExtend::.
+
+ARGUMENT:: repeats
+Number of times the generated sequence will be repeated.
+
+returns:: A Pshunc
+
+EXAMPLES::
+
+Run the examples below multiple times to see the random selection in effect.
+
+Shuffle and truncate.
+code::
+(
+var list = (0..100);
+Pshunc(list, 3).asStream.all.postln;
+)
+::
+
+Now with repetition.
+code::
+(
+var list = (0..100);
+Pshunc(list, 3, 4).asStream.all.postln;
+)
+::
+
+When the specified length is larger than the original list, Pshunc EMPHASIS::extends:: the list.
+code::
+(
+var list = [\a, \b, \c];
+Pshunc(list, 5).asStream.all.postln;
+)
+::
+
+STRONG::Musical examples::
+
+Shuffle and truncate a major scale to generate diatonic step sequences.
+code::
+(
+Pbind(
+	\degree, Pshunc((0..7), 3, 4).trace,
+	\dur, 0.3,
+).play;
+)
+::
+
+Generate a new sequence after 4 iterations (the trick is in the .repeat).
+code::
+(
+Pbind(
+	\degree, Pshunc((-7..7), 3, 4).repeat.trace,
+	\dur, 0.2,
+).play;
+)
+::
+
+Combine for more variation.
+code::
+(
+Pbind(
+	\degree, [-1, 1, 4],
+	\mtranspose, Pshunc([-2, -1, 0, 2], 2, 2).repeat.stutter(4),
+	\dur, Pshunc((0.1, 0.105 .. 0.3), 4, 4).repeat,
+	\strum, 0.02,
+).play;
+)
+
+(
+Pbind(
+	\degree, Pshunc((-7..7), 4, 8).repeat,
+	\mtranspose, Pbrown(-4, 4, 2.0).stutter(Pwhite(3, 8)).round,
+	\dur, 0.2,
+).play;
+)
+::

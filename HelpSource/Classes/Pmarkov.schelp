@@ -1,0 +1,100 @@
+TITLE:: Pmarkov
+summary:: First order Markov chain
+categories:: Libraries>alea, Streams-Patterns-Events>Patterns>Math, Streams-Patterns-Events>Patterns>List>Indexing
+related:: Overviews/alea, Classes/Pfsm, Classes/Pdfsm
+
+DESCRIPTION::
+"A Markov chain is a stochastic model describing a sequence of possible events in which the probability of each event depends only on the state attained in the previous event." footnote::See https://wikipedia.org/wiki/Markov_chain::
+
+For a more elaborate take on Markov chains, see the link::https://github.com/supercollider-quarks/MathLib##MathLib quark::.
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new Pmarkov.
+
+ARGUMENT:: states
+An array of items which will be embedded in the stream, when it reaches are .
+
+ARGUMENT:: weights
+An array of arrays containing probabilities for the next state.
+
+Subarrays are normalized using link::Search#normalizeSum#normalizeSum::.
+
+NOTE:: All supplied arrays must be the same size. If there are 3 possible states, code::states:: and code::weights:: must all contain exactly 3 items. Each subarray in code::weights:: must contain exactly 3 items, corresponding to the probabilities for ensuing states.::
+
+ARGUMENT:: repeats
+Number of outputs in the sequence.
+
+ARGUMENT:: startPos
+Index of the initial state.
+
+returns:: A Pmarkov.
+
+EXAMPLES::
+
+The example below has three states with indices 0, 1, and 2. The weights array describes the transitions between states as follows:
+LIST::
+## After state 0, always go to state 2.
+## After state 1, go to state 0 25% of the time, stay at state 1 25% of the time, and go to state 2 %50 of the time.
+## After state 2, go to state 0 50% of the time and go to state 1 50% of the time.
+::
+
+code::
+(
+var states, weights;
+states = [0, 2, 4];
+weights = [
+	[0, 0, 1],
+	[0.25, 0.25, 0.5],
+	[0.5, 0.5, 0]
+];
+Pbind(
+	\degree, Pmarkov(states, weights),
+	\dur, 0.25,
+).play;
+)
+::
+
+States can be other Patterns.
+
+code::
+(
+var states, weights;
+states = [
+	Pwhite(-4, -1, 1),
+	Pseq([0, 1, 2]),
+	Pshuf([5, 6, 7])
+];
+weights = [
+	[0.5, 0.5, 0],
+	[0.2, 0.2, 0.6],
+	[0.8, 0.2, 0]
+];
+Pbind(
+	\degree, Pmarkov(states, weights),
+	\dur, 0.25,
+).play;
+)
+::
+
+Weight subarrays are normalized so they add up to 1.
+
+code::
+(
+var states, weights;
+states = [0, 2, 4];
+weights = [
+	[0, 40, 10],
+	[5, 3, 12],
+	[5, 0, 0]
+];
+~chain = Pmarkov(states, weights);
+Pbind(
+	\degree, c,
+	\dur, 0.25,
+).play;
+)
+// List the normalized weights
+~chain.weights.postln;
+::

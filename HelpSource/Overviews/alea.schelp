@@ -1,0 +1,13 @@
+title:: alea
+summary:: Patterns for aleatory composition
+categories:: Libraries>alea
+related:: Classes/Pshunc, Classes/Pmarkov
+
+description:: A collection of Pattern classes designed for aleatory composition, aiming for the sweet spot between randomness and control.
+
+DEFINITIONLIST::
+## LINK::Classes/Pshunc::
+|| Shuffle and truncate a list to a certain length.
+## LINK::Classes/Pmarkov::
+|| A first-order Markov chain.
+::
