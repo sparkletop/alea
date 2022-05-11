@@ -9,7 +9,7 @@
 			{
 				var space = sum - out.sum{|i|i.value};
 				var candidate = iterator.next;
-				if (candidate < space,
+				if (candidate <= space,
 					{ out.add(candidate) },
 					{
 						// numSkips = numSkips + 1;
